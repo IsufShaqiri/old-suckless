@@ -61,10 +61,10 @@ static const Rule rules[] = {
 	{ "qutebrowser",  NULL,			NULL,		1 << 2,			0,			 -1 },
 	{ "Pcmanfm",  NULL,			NULL,		1 << 3,			0,			 -1 },
 	{ "Nemo",  NULL,			NULL,		1 << 3,			0,			 -1 },
-	{ NULL,		  "spterm",		NULL,		SPTAG(0),		1,			 -1 },
-	{ NULL,		  "spranger",	NULL,		SPTAG(1),		1,			 -1 },
-	{ NULL,		  "spmusic",	NULL,		SPTAG(2),		1,			 -1 },
-	{ NULL,		  "launch",	    NULL,		SPTAG(3),		1,			 -1 },
+	{ NULL,		  "spterm",		NULL,		SPTAG(0),		0,			 -1 },
+	{ NULL,		  "spranger",	NULL,		SPTAG(1),		0,			 -1 },
+	{ NULL,		  "spmusic",	NULL,		SPTAG(2),		0,			 -1 },
+	{ NULL,		  "launch",	    NULL,		SPTAG(3),		0,			 -1 },
 };
 
 /* layout(s) */
