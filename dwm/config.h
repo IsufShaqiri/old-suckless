@@ -6,13 +6,16 @@ static const Gap default_gap        = {.isgap = 1, .realgap = 10, .gappx = 10};
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const char *fonts[]          = { "monospace:size=10" };
-static const char dmenufont[]       = "monospace:size=10";
-static const char col_gray1[]       = "#222222";
-static const char col_gray2[]       = "#444444";
-static const char col_gray3[]       = "#bbbbbb";
-static const char col_gray4[]       = "#eeeeee";
-static const char col_cyan[]        = "#005577";
+static const char *fonts[]          = { 
+	"Hermit:size=11",
+	"FontAwesome:size=11:antialias=true:hinting=true"
+};
+static const char dmenufont[]       = "Hermit:size=11";
+static const char col_gray1[]       = "#1d1f21";
+static const char col_gray2[]       = "#282a2e";
+static const char col_gray3[]       = "#c5c8c6";
+static const char col_gray4[]       = "#ddd9d9";
+static const char col_cyan[]        = "#5E8D87";
 static const char *colors[][4]      = {
 	/*               fg         bg         border     float */
 	[SchemeNorm] = { col_gray3, col_gray1, col_gray2, col_gray2 },
@@ -25,16 +28,18 @@ typedef struct {
 } Sp;
 const char *spcmd1[] = {"st", "-n", "spterm", "-g", "120x34", NULL };
 const char *spcmd2[] = {"st", "-n", "spfm", "-g", "144x41", "-e", "ranger", NULL };
-const char *spcmd3[] = {"keepassxc", NULL };
+const char *spcmd3[] = {"st", "-n", "stncmpcpp", "-g", "144x41", "-e", "ncmpcpp", NULL };
+const char *configs[] = {"st", "-n", "configs", "-g", "144x41", "-e", "configs.sh", NULL };
 static Sp scratchpads[] = {
 	/* name          cmd  */
 	{"spterm",      spcmd1},
 	{"spranger",    spcmd2},
-	{"keepassxc",   spcmd3},
+	{"spncmpcpp",   spcmd3},
+	{"spconfigs",   configs},
 };
 
 /* tagging */
-static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+static const char *tags[] = { "", "", "", "", "", "", "", "", "" };
 
 static const Rule rules[] = {
 	/* xprop(1):
@@ -43,15 +48,18 @@ static const Rule rules[] = {
 	 */
 	/* class      	     instance    	title       		tags mask     switchtotag    isfloating   monitor  scratchkey*/
 	{ "Gimp",     	     NULL,       	NULL,       		0,            0,             1,           -1 },
-	{ "Firefox",  	     NULL,       	NULL,       		1 << 8,       0,             0,           -1 },
-	{ NULL,	             "spterm",		NULL,			SPTAG(0),     1,			  -1 },
-	{ NULL,		     "spfm",		NULL,			SPTAG(1),     1,			  -1 },
-	{ NULL,		     "keepassxc",	NULL,			SPTAG(2),     0,			  -1 },
+	{ "Firefox",  	     NULL,       	NULL,       		2,            2,             0,           -1 },
+	{ "qutebrowser",     NULL,       	NULL,       		2,            2,             0,           -1 },
+	{ "Pcmanfm",         NULL,       	NULL,       		4,            4,             0,           -1 },
+	{ NULL,	             "spterm",		NULL,			SPTAG(0),     0,			  -1 },
+	{ NULL,		     "spfm",		NULL,			SPTAG(1),     0,			  -1 },
+	{ NULL,		     "stncmpcpp",	NULL,			SPTAG(2),     0,			  -1 },
+	{ NULL,		     "spconfigs",	NULL,			SPTAG(3),     0,			  -1 },
 	{ NULL,              NULL,   		"scratchpad",   	0,            1,             -1,          's' },
 };
 
 /* layout(s) */
-static const float mfact     = 0.55; /* factor of master area size [0.05..0.95] */
+static const float mfact     = 0.5; /* factor of master area size [0.05..0.95] */
 static const int nmaster     = 1;    /* number of clients in master area */
 static const int resizehints = 1;    /* 1 means respect size hints in tiled resizals */
 static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen window */
@@ -66,7 +74,7 @@ static const Layout layouts[] = {
 };
 
 /* key definitions */
-#define MODKEY Mod1Mask
+#define MODKEY Mod4Mask
 #define TAGKEYS(KEY,TAG) \
 	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
 	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
@@ -79,15 +87,18 @@ static const Layout layouts[] = {
 /* commands */
 static const char *dmenucmd[] = { "dmenu_run", "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *termcmd[]  = { "st", NULL };
+static const char *browser[] = { "qutebrowser", NULL };
 
 /*First arg only serves to match against key in rules*/
-static const char *scratchpadcmd[] = {"s", "st", "-t", "scratchpad", NULL}; 
+/* static const char *scratchpadcmd[] = {"st", "-n", "spvim", "-t", "scratchpad", "-e", "nvim", "-g", "120x34", NULL};  */
+
 
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
-	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
-	{ MODKEY,             		XK_Return, spawn,          {.v = termcmd } },
-	{ MODKEY,                       XK_grave,  togglescratch,  {.v = scratchpadcmd } },
+	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = dmenucmd } },
+	{ MODKEY,             	        XK_Return, spawn,          {.v = termcmd } },
+	{ MODKEY,             		XK_w,      spawn,          {.v = browser } },
+	/* { MODKEY,                       XK_e,  	   togglescratch,  {.v = scratchpadcmd } }, */
 	{ MODKEY|ControlMask,           XK_space,  focusmaster,    {0} },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
@@ -96,7 +107,7 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_d,      incnmaster,     {.i = -1 } },
 	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
 	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
-	{ MODKEY|ShiftMask,             XK_Return, zoom,           {0} },
+	{ MODKEY|ControlMask,           XK_Return, zoom,           {0} },
 	{ MODKEY,                       XK_Tab,    view,           {0} },
 	{ MODKEY,             		XK_q,      killclient,     {0} },
 	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
@@ -111,9 +122,10 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
 	{ MODKEY,                       XK_comma,  focusmon,       {.i = -1 } },
 	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
-	{ MODKEY|ControlMask,           XK_y,  	   togglescratch,  {.ui = 0 } },
-	{ MODKEY|ControlMask,           XK_u,	   togglescratch,  {.ui = 1 } },
-	{ MODKEY|ControlMask,           XK_x,	   togglescratch,  {.ui = 2 } },
+	{ MODKEY,           		XK_a,  	   togglescratch,  {.ui = 0 } },
+	{ MODKEY,           		XK_z,	   togglescratch,  {.ui = 1 } },
+	{ MODKEY,           		XK_x,	   togglescratch,  {.ui = 2 } },
+	{ MODKEY|Mod1Mask,           	XK_c,	   togglescratch,  {.ui = 3 } },
 	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
 	{ MODKEY,                       XK_minus,  setgaps,        {.i = -5 } },
