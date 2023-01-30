@@ -37,13 +37,15 @@ typedef struct {
 	const void *cmd;
 } Sp;
 const char *spcmd1[] = {"st", "-n", "spterm", "-g", "120x34", NULL };
-const char *spcmd2[] = {"st", "-n", "spfm", "-g", "144x41", "-e", "ranger", NULL };
-const char *spcmd3[] = {"st", "-n", "spm", "-g", "144x41", "-e", "ncmpcpp", NULL };
+const char *spcmd2[] = {"st", "-n", "spranger", "-g", "144x41", "-e", "ranger", NULL };
+const char *spcmd3[] = {"st", "-n", "spmusic", "-g", "144x41", "-e", "ncmpcpp", NULL };
+const char *spcmd4[] = {"st", "-n", "launch", "-g", "120x34", "-e", "launch.sh", NULL };
 static Sp scratchpads[] = {
 	/* name          cmd  */
 	{"spterm",      spcmd1},
 	{"spranger",    spcmd2},
-	{"spmusic",   spcmd3},
+	{"spmusic",     spcmd3},
+	{"launch",   spcmd4},
 };
 
 /* tagging */
@@ -55,14 +57,18 @@ static const Rule rules[] = {
 	 */
 	/* class      instance    title       tags mask     isfloating   monitor */
 	{ "Gimp",	  NULL,			NULL,		0,				1,			 -1 },
-	{ "firefox",  NULL,			NULL,		1 << 8,			0,			 -1 },
+	{ "Firefox",  NULL,			NULL,		1 << 2,			0,			 -1 },
+	{ "qutebrowser",  NULL,			NULL,		1 << 2,			0,			 -1 },
+	{ "Pcmanfm",  NULL,			NULL,		1 << 3,			0,			 -1 },
+	{ "Nemo",  NULL,			NULL,		1 << 3,			0,			 -1 },
 	{ NULL,		  "spterm",		NULL,		SPTAG(0),		1,			 -1 },
-	{ NULL,		  "spfm",		NULL,		SPTAG(1),		1,			 -1 },
-	{ NULL,		  "spmusic",	NULL,		SPTAG(2),		0,			 -1 },
+	{ NULL,		  "spranger",	NULL,		SPTAG(1),		1,			 -1 },
+	{ NULL,		  "spmusic",	NULL,		SPTAG(2),		1,			 -1 },
+	{ NULL,		  "launch",	    NULL,		SPTAG(3),		1,			 -1 },
 };
 
 /* layout(s) */
-static const float mfact     = 0.55; /* factor of master area size [0.05..0.95] */
+static const float mfact     = 0.50; /* factor of master area size [0.05..0.95] */
 static const int nmaster     = 1;    /* number of clients in master area */
 static const int resizehints = 0;    /* 1 means respect size hints in tiled resizals */
 static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen window */
@@ -120,9 +126,10 @@ static Keychord keychords[] = {
 	{1, {{MODKEY|ShiftMask, XK_r}},                 quit,           {1} }, 
 	{1, {{MODKEY, XK_comma}},						focusmon,       {.i = -1 } },
 	{1, {{MODKEY, XK_period}},						focusmon,       {.i = +1 } },
-	{1, {{MODKEY,            			XK_a}},  	togglescratch,  {.ui = 0 } },
-	{1, {{MODKEY,            			XK_z}},	    togglescratch,  {.ui = 1 } },
-	{1, {{MODKEY,            			XK_x}},	    togglescratch,  {.ui = 2 } },
+	{2, {{MODKEY, XK_s}, {0, XK_t}},  	        togglescratch,  {.ui = 0 } },
+	{2, {{MODKEY, XK_s}, {0, XK_f}},	        togglescratch,  {.ui = 1 } },
+	{2, {{MODKEY, XK_s}, {0, XK_m}},	        togglescratch,  {.ui = 2 } },
+	{2, {{MODKEY, XK_s}, {0, XK_l}},	        togglescratch,  {.ui = 3 } },
 	{1, {{MODKEY|ShiftMask, XK_comma}},				tagmon,         {.i = -1 } },
 	{1, {{MODKEY|ShiftMask, XK_period}},			tagmon,         {.i = +1 } },
 	TAGKEYS(                        XK_1,                      0)
