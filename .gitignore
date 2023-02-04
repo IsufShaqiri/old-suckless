@@ -1,8 +1,8 @@
-dwm/patches/*
-dwm/*.rej
-dwm/*.orig
-dmenu/patches/*
-dmenu/*.rej
-dmenu/*.orig
-st/*.rej
-st/*.orig
+.gitignore
+*.orig
+*.rej
+patches
+util.o
+dwm
+dwm.o
+drw.o

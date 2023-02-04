@@ -6,7 +6,7 @@ static const unsigned int gappx     = 6;        /* gaps between windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const int horizpadbar        = 2;        /* horizontal padding for statusbar */
+static const int horizpadbar        = 1;        /* horizontal padding for statusbar */
 static const int vertpadbar         = 2;        /* vertical padding for statusbar */
 static const char *fonts[]          = { 
     "Hermit:size=11:antialias=true:hinting=true",
@@ -39,12 +39,14 @@ const char *spcmd1[] = {"st", "-n", "spterm", "-g", "120x34", NULL };
 const char *spcmd2[] = {"st", "-n", "spfm", "-g", "144x41", "-e", "ranger", NULL };
 const char *spcmd3[] = {"st", "-n", "spmusic", "-g", "144x41", "-e", "ncmpcpp", NULL };
 const char *spcmd4[] = {"st", "-n", "sppulse", "-g", "120x34", "-e", "pulsemixer", NULL };
+const char *spcmd5[] = {"st", "-n", "launch", "-e", "~/.scripts/launch.sh", NULL };
 static Sp scratchpads[] = {
 	/* name          cmd  */
 	{"spterm",      spcmd1},
 	{"spfm",    spcmd2},
 	{"spmusic",     spcmd3},
     {"sppulse",     spcmd4},
+    {"launch",      spcmd5},
 };
 
 /* tagging */
@@ -65,6 +67,7 @@ static const Rule rules[] = {
 	{ NULL,		        "spfm",		    NULL,		SPTAG(1),		1,			 -1 },
 	{ NULL,		        "spmusic",	    NULL,		SPTAG(2),		1,			 -1 },
 	{ NULL,		        "sppulse",	    NULL,		SPTAG(3),		1,			 -1 },
+    { NULL,             "launch",       NULL,       SPTAG(4),       1,           -1 },
 };
 
 /* layout(s) */
@@ -141,6 +144,7 @@ static Keychord keychords[] = {
     {1, {{MODKEY, XK_r}},                           togglescratch,  {.ui = 1 } },
     {1, {{MODKEY, XK_m}},                           togglescratch,  {.ui = 2 } },
     {1, {{MODKEY, XK_v}},                           togglescratch,  {.ui = 3 } },
+    {2, {{MODKEY, XK_s}, {0, XK_l}},                togglescratch,  {.ui = 4 } },
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
 	TAGKEYS(                        XK_3,                      2)
