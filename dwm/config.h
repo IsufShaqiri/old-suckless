@@ -1,7 +1,7 @@
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
-static const unsigned int borderpx  = 1;        /* border pixel of windows */
+static const unsigned int borderpx  = 2;        /* border pixel of windows */
 static const unsigned int gappx     = 6;        /* gaps between windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
@@ -12,18 +12,19 @@ static const char *fonts[]          = {
     "Hermit:size=11:antialias=true:hinting=true",
     "FontAwesome:size=11:antialias=true:hinting=true"
 };
-static const char dmenufont[]       = "Hermit:size=11";
-static const char col_gray1[]       = "#222222";
-static const char col_gray2[]       = "#444444";
-static const char col_gray3[]       = "#bbbbbb";
-static const char col_gray4[]       = "#eeeeee";
-static const char col_cyan[]        = "#005577";
+static const char dmenufont[]           = "Hermit:size=11";
+static const char normbgcolor[]         = "#1D1F21";
+static const char normbordercolor[]     = "#5F819D";
+static const char normfgcolor[]         = "#C5C8C6";
+static const char selfgcolor[]          = "#324C80";
+static const char selbordercolor[]      = "#2B4F98";
+static const char selbgcolor[]          = "#A1CDCD";
 static const unsigned int baralpha = 0xd0;
 static const unsigned int borderalpha = OPAQUE;
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
-	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
-	[SchemeSel]  = { col_gray4, col_cyan,  col_cyan  },
+	[SchemeNorm] = { normfgcolor, normbgcolor, normbordercolor },
+	[SchemeSel]  = { selfgcolor, selbgcolor,  selbordercolor  },
 };
 static const unsigned int alphas[][3]      = {
 	/*               fg      bg        border     */
@@ -99,10 +100,12 @@ static const Layout layouts[] = {
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 
 /* commands */
-static const char *dmenucmd[] = { "dmenu_run", "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
+static const char *dmenucmd[] = { "dmenu_run", "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbgcolor, "-sf", selfgcolor, NULL };
 static const char *termcmd[]  = { "st", NULL };
 static const char *browser[] = { "qutebrowser", NULL };
 static const char *browser2[] = { "firefox", NULL };
+static const char *fm[] = { "pcmanfm", NULL };
+static const char *fm2[] = { "nemo", NULL };
 
 static Keychord keychords[] = {
 	/* Keys        function        argument */
@@ -110,6 +113,8 @@ static Keychord keychords[] = {
 	{1, {{MODKEY, XK_Return}},			            spawn,          {.v = termcmd } },
 	{2, {{MODKEY, XK_w}, {0, XK_q}},			    spawn,          {.v = browser } },
 	{2, {{MODKEY, XK_w}, {0, XK_f}},			    spawn,          {.v = browser2 } },
+    {2, {{MODKEY, XK_p}, {0, XK_p}},                spawn,          {.v = fm } },
+    {2, {{MODKEY, XK_p}, {0, XK_n}},                spawn,          {.v = fm2 } },
 	{1, {{Mod1Mask, XK_b}},							togglebar,      {0} },
 	{1, {{MODKEY|ShiftMask,XK_j}},                  rotatestack,    {.i = +1 } },
 	{1, {{MODKEY|ShiftMask,XK_k}},                  rotatestack,    {.i = -1 } },
